@@ -1,6 +1,6 @@
 import { Button, Form, Input, message } from 'antd';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Divider from '../../Components/Divider';
 import { RegisterUser } from '../../apicalls/users';
 
@@ -12,23 +12,31 @@ const validation = [
 ];
 
 function Register() {
+  const navigate = useNavigate();
   const handleFinish = async (values) => {
     try {
       const response = await RegisterUser(values);
-      if(response.success) {
-        message.success(response.message)
-      }
-      else {
-        throw new Error(response.message)
+      if (response.success) {
+        message.success(response.message);
+      } else {
+        throw new Error(response.message);
       }
     } catch (error) {
-      message.error(error.message)
+      message.error(error.message);
     }
   };
 
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/');
+    }
+  }, []);
+
   return (
     <div className="h-screen bg-primary flex justify-center items-center ">
-      <div className=" bg-white p-5 rounded w-[550px]">    { /* border border-solid border-gray-800 */ }
+      <div className=" bg-white p-5 rounded w-[550px]">
+        {' '}
+        {/* border border-solid border-gray-800 */}
         <h1 className=" text-gray-700">Register</h1>
         <Divider />
         <Form layout="vertical" onFinish={handleFinish}>

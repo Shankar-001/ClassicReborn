@@ -380,9 +380,300 @@ const handleFinish = async (values) => {
     }
   };
 ```
+# Now in Authorization Process
+
+in Server/Routes/usersRoute.js include these code
+
+```js
+import authMiddleware from '../middlewares/authMiddleware.js';
+
+
+// get current user && Protected Api
+
+//from here i am going to use middleware means logic which will execute before executing the endpont logic
+// whenever this get-current-user endpoint is called  i am going to execute logic in middleware
+
+router.get('/get-current-user', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.body.userId);
+    res.send({
+      success: true,
+      message: 'User Fetched Successfully',
+      data: user,
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+```
+for authMiddleware create a folder middlewares
+- in Server/middlewares/authMiddleware.js
+
+```jw
+import jwt from 'jsonwebtoken';
+
+export default async (req, res, next) => {
+  try {
+    const token = req.header('authorization').split(' ')[1]; // splitting a string it becomes an array
+    const decryptedToken = jwt.verify(token, process.env.JWT_SECRET); // to decrypt use jwt.verify..
+    req.body.userId = decryptedToken.userId;
+    next();
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// jwt.verify(token, process.env.JWT_SECRET);   the first parameter as the token and second parameter as the secret key and it must match with encrypted secret key
+// decryptedToken an objected with the property userID
+
+```
+- in client /src/Pages/Login/Login.js
+
+```js
+import { Button, Form, Input, message } from 'antd';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Divider from '../../Components/Divider';
+import { LoginUser } from '../../apicalls/users';
+
+const validation = [
+  {
+    required: true,
+    message: 'Fill out this field',
+  },
+];
+
+function Login() {
+  const navigate = useNavigate();
+  const handleFinish = async (values) => {
+    try {
+      const response = await LoginUser(values);
+      if (response.success) {
+        message.success(response.message);
+        localStorage.setItem('token', response.token);
+        navigate('/');
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/');
+    }
+  }, []);
+
+  return (
+    <div className="h-screen bg-primary flex justify-center items-center ">
+      <div className=" bg-white p-5 rounded w-[550px]">
+        {/* border border-solid border-gray-800 */}
+        <h1 className=" text-gray-700">Login</h1>
+        <Divider />
+        <Form layout="vertical" onFinish={handleFinish}>
+          <Form.Item label="Email" name="email" rules={validation}>
+            <Input placeholder="Email" />
+          </Form.Item>
+          <Form.Item label="Password" name="password" rules={validation}>
+            <Input type="password" placeholder="Password" />
+          </Form.Item>
+          <Button type="primary" htmlType="submit" block className="mt-2">
+            Login
+          </Button>
+          <div className="mt-5 text-center">
+            <span className="text-gray-500">
+              Don't have an account?{' '}
+              <Link to="/register" className=" text-primary">
+                Register
+              </Link>
+            </span>
+          </div>
+        </Form>
+      </div>
+    </div>
+  );
+}
+export default Login;
+
+```
+
+
+Create a ProtectedPage.js file in Components
+
+```js
+import { useEffect, useState } from 'react';
+import { message } from 'antd';
+import { GetCurrentUser } from '../apicalls/users';
+import { useNavigate } from 'react-router-dom';
+
+function ProtectedPage({ children }) {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  const validateToken = async () => {
+    try {
+      const response = await GetCurrentUser();
+      if (response.success) {
+        setUser(response.data);
+      } else {
+        navigate('/login');
+        message.error(response.message);
+      }
+    } catch (error) {
+      navigate('/login');
+      message.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      validateToken();
+    } else {
+      message.error('Session Expired Please Login Again');
+      navigate('/login');
+    }
+  }, []);
+  return (
+    <div>
+      {user && (
+        <div>
+          {user.name}
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+export default ProtectedPage;
+```
+
+- in client/App.js
+wrap the element in PreotectPage 
+```js
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from './Pages/Home/Home';
+import Login from './Pages/Login/Login';
+import Register from './Pages/Registration/Register';
+import ProtectedPage from './Components/ProtectedPage';
+
+function App() {
+  return (
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedPage>
+                <Home />
+              </ProtectedPage>
+            }
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+}
+
+export default App;
+```
+
+
+- in client /src/Pages/Registration/Register.js
+```js
+import { Button, Form, Input, message } from 'antd';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Divider from '../../Components/Divider';
+import { RegisterUser } from '../../apicalls/users';
+
+const validation = [
+  {
+    required: true,
+    message: 'Fill out this field',
+  },
+];
+
+function Register() {
+  const navigate = useNavigate();
+  const handleFinish = async (values) => {
+    try {
+      const response = await RegisterUser(values);
+      if (response.success) {
+        message.success(response.message);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/');
+    }
+  }, []);
+
+  return (
+    <div className="h-screen bg-primary flex justify-center items-center ">
+      <div className=" bg-white p-5 rounded w-[550px]">
+        {' '}
+        {/* border border-solid border-gray-800 */}
+        <h1 className=" text-gray-700">Register</h1>
+        <Divider />
+        <Form layout="vertical" onFinish={handleFinish}>
+          <Form.Item label="Name" name="name" rules={validation}>
+            <Input placeholder="Name" />
+          </Form.Item>
+          <Form.Item label="Email" name="email" rules={validation}>
+            <Input placeholder="Email" />
+          </Form.Item>
+          <Form.Item label="Password" name="password" rules={validation}>
+            <Input type="password" placeholder="Password" />
+          </Form.Item>
+          <Button type="primary" htmlType="submit" block className="mt-2">
+            Register
+          </Button>
+          <div className="mt-5 text-center">
+            <span className="text-gray-500">
+              Already have an account?{' '}
+              <Link to="/login" className=" text-primary">
+                Login
+              </Link>
+            </span>
+          </div>
+        </Form>
+      </div>
+    </div>
+  );
+}
+export default Register;
+
+```
 
 
 
+
+
+
+
+
+
+
+
+
+split A get/post 
 
 
 
