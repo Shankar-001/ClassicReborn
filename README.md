@@ -662,6 +662,78 @@ export default Register;
 
 ```
 
+From Now on Work on the layout of the application
+
+for all the protected pages the layout will be common
+
+
+in Client/src/Components/ProtectedPage.js
+
+```js
+import { useEffect, useState } from 'react';
+import { message } from 'antd';
+import { GetCurrentUser } from '../apicalls/users';
+import { useNavigate } from 'react-router-dom';
+
+function ProtectedPage({ children }) {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  const validateToken = async () => {
+    try {
+      const response = await GetCurrentUser();
+      if (response.success) {
+        setUser(response.data);
+      } else {
+        navigate('/login');
+        message.error(response.message);
+      }
+    } catch (error) {
+      navigate('/login');
+      message.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      validateToken();
+    } else {
+      message.error('Session Expired Please Login Again');
+      navigate('/login');
+    }
+  }, []);
+  return (
+    user && (
+      <div>
+
+        {/* Header part start here */}
+        <div className=' flex justify-between items-center bg-slate-700 p-5'>
+          <h1 className="text-2xl text-cyan-300">
+            Sell Or Swirl
+          </h1>
+          <div className=' bg-white px-2 py-3 rounded flex gap-1 items-center'>
+          <i className="ri-user-2-fill"></i>
+            <span className='underline cursor-pointer'>{user.name}</span>
+            <i className="ri-logout-circle-r-line ml-4 cursor-pointer"
+            onClick={() => {
+              localStorage.removeItem("token")
+              navigate('/login')              
+            }}
+            ></i>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className=' p-5'>{children}</div>
+      </div>
+    )
+  );
+}
+export default ProtectedPage;
+```
+Now I'll work on Loader or Spinner part which i'm going to global because that has to be done on many pages
+
+in Client/Redux/loaderSlice.js
 
 
 
@@ -673,7 +745,6 @@ export default Register;
 
 
 
-split A get/post 
 
 
 

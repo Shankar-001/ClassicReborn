@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Divider from '../../Components/Divider';
 import { RegisterUser } from '../../apicalls/users';
+import { useDispatch } from 'react-redux';
+import { SetLoader } from '../../Redux/lodersSlice';
 
 const validation = [
   {
@@ -12,16 +14,21 @@ const validation = [
 ];
 
 function Register() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleFinish = async (values) => {
     try {
+      dispatch(SetLoader(true));
       const response = await RegisterUser(values);
+      navigate('/login');
+      dispatch(SetLoader(false));
       if (response.success) {
         message.success(response.message);
       } else {
         throw new Error(response.message);
       }
     } catch (error) {
+      dispatch(SetLoader(false));
       message.error(error.message);
     }
   };

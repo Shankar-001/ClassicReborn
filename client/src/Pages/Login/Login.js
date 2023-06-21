@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Divider from '../../Components/Divider';
 import { LoginUser } from '../../apicalls/users';
+import { useDispatch } from 'react-redux';
+import { SetLoader } from '../../Redux/lodersSlice';
 
 const validation = [
   {
@@ -13,9 +15,12 @@ const validation = [
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleFinish = async (values) => {
     try {
+      dispatch(SetLoader(true));
       const response = await LoginUser(values);
+      dispatch(SetLoader(false));
       if (response.success) {
         message.success(response.message);
         localStorage.setItem('token', response.token);
@@ -24,6 +29,7 @@ function Login() {
         throw new Error(response.message);
       }
     } catch (error) {
+      dispatch(SetLoader(false));
       message.error(error.message);
     }
   };
