@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import ProductsForm from './ProductsForm';
 import { useDispatch } from 'react-redux';
 import { SetLoader } from '../../../Redux/lodersSlice';
-import { GetProducts } from '../../../apicalls/products';
+import { DeleteProduct, GetProducts } from '../../../apicalls/products';
+import moment from 'moment'
 
 function Products() {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -28,6 +29,25 @@ function Products() {
   useEffect(() => {
     getData();
   }, []);
+
+  const deleteProduct = async (id) => {
+    try {
+      dispatch(SetLoader(true))
+      const response = await DeleteProduct(id);
+      dispatch(SetLoader(false));
+      if(response.success) {
+        message.success(response.message);
+        getData();
+      }
+      else {
+        dispatch(SetLoader(false));
+        message.error(response.message);
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message)
+    }
+  }
 
   const columns = [
     {
@@ -55,6 +75,11 @@ function Products() {
       dataIndex: 'status',
     },
     {
+      title: 'Added On',
+      dataIndex: 'createdAt',
+      render : (text, record) => moment(record.createdAt).format("DD-MM-YYYY hh:mm A"),
+    },
+    {
       title: 'Action',
       dataIndex: 'action',
       render: (text, record) => {
@@ -71,6 +96,9 @@ function Products() {
             <i
               className="ri-delete-bin-2-line"
               style={{ fontSize: '20px' }}
+              onClick={() => {
+                deleteProduct(record._id)
+              }}
             ></i>
           </div>
         );
@@ -81,7 +109,13 @@ function Products() {
   return (
     <div>
       <div className="flex justify-end mb-5">
-        <Button type="default" onClick={() => setShowProductForm(true)}>
+        <Button
+          type="default"
+          onClick={() => {
+            setSelectedProduct(null);
+            setShowProductForm(true);
+          }}
+        >
           Add Product
         </Button>
       </div>

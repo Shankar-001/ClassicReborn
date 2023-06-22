@@ -1,9 +1,10 @@
-CSS Libraries 
+CSS Libraries
 antd - building the component
 tailwind css - CSS for normal styling
 
 in terminal
 for antd installation
+
 ```
 npm i antd
 ```
@@ -17,12 +18,11 @@ npx tailwindcss init
 ```
 
 In tailwind.config.js
+
 ```js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -34,45 +34,49 @@ module.exports = {
   corePlugins: {
     preflight: false,
   },
-}
-
+};
 ```
 
 in index.css
+
 ```css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 ```
+
 install module as required : redux, react-router-dom, react-redux, @reactJs/toolkit
 
 in index.html
 
 add cdn for icon
+
 ```html
-<link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+<link
+  href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
+  rel="stylesheet"
+/>
 ```
 
 import external google font in index.css
 
-
 ```css
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 ```
+
 ```css
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif !important;
 }
 ```
-When you apply !important to a CSS property, it tells the browser to prioritize that specific rule over any other rule that might be applied to the same  element.
 
-
-
+When you apply !important to a CSS property, it tells the browser to prioritize that specific rule over any other rule that might be applied to the same element.
 
 create .env
+
 ```
 PORT = 5000
 
@@ -81,6 +85,7 @@ NODE_MODE = development
 MONGO_URL = {connect this from mongodb connect}
 
 ```
+
 In Sserver folder
 
 Config/dbconfig.js
@@ -98,7 +103,6 @@ const connectDB = async () => {
 };
 
 export default connectDB;
-
 ```
 
 server.js
@@ -108,19 +112,17 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './Config/dbConfig.js';
 
-
 dotenv.config();
 
 connectDB();
 const app = express();
-app.use(express.json())
+app.use(express.json());
 
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
-
-
 ```
+
 for frontend
 
 - Axios
@@ -143,7 +145,6 @@ Models/userModels.js
 create schema for databse
 
 ```js
-
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 const userSchema = new Schema(
@@ -177,7 +178,6 @@ const userSchema = new Schema(
 
 const User = mongoose.model('users', userSchema);
 export default User;
-
 ```
 
 for API endpoints handling with the users
@@ -248,7 +248,9 @@ router.post('/login', async (req, res) => {
 
     // create token and assign it
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {expiresIn: "1d"});
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
 
     // Response
     res.send({
@@ -265,8 +267,8 @@ router.post('/login', async (req, res) => {
 });
 
 export default router;
-
 ```
+
 # Update server.js Now
 
 ```js
@@ -287,36 +289,34 @@ app.use('/api/users', usersRoute);
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
-
 ```
 
 Now we are working on authentication api's integration of login and registration with client
 
-
 # in Client package.json
 
 add
+
 ```
   "proxy": "http://localhost:5000"
 ```
+
 at the end of file because proxy is the backend endpoint and 5000 is the port on which i am working right now
 
 from client/Pages/Registration/Register.js
 
 function Register() {
-  const handleFinish = (values) => {
-    console.log('Success:', values);
-  };
+const handleFinish = (values) => {
+console.log('Success:', values);
+};
 i have to send this 'values' to the mongodb through node.js because client directly can not communicate with the database so i am sending it to the nodeJs & nodeJs will send it to the mongodb..
 creating all apis integration in a separate folder
-
-
 
 Now in apicalls create axiosInstance.js and users.js in client src
 
 in users.js
-```js
 
+```js
 import { axiosInstance } from './axiosInstance';
 
 // register user
@@ -340,53 +340,52 @@ export const LoginUser = async (payload) => {
     return error.message;
   }
 };
-
 ```
 
 - in client /src/Pages/Login/Login.js
-update this
+  update this
 
 ```js
 const handleFinish = async (values) => {
-    try {
-      const response = await LoginUser(values);
-      if (response.success) {
-        message.success(response.message);
-        console.log(response);
-        localStorage.setItem('token', response.token);
-      } else {
-        throw new Error(response.message);
-      }
-    } catch (error) {
-      message.error(error.message);
+  try {
+    const response = await LoginUser(values);
+    if (response.success) {
+      message.success(response.message);
+      console.log(response);
+      localStorage.setItem('token', response.token);
+    } else {
+      throw new Error(response.message);
     }
-  };
+  } catch (error) {
+    message.error(error.message);
+  }
+};
 ```
+
 - in client /src/Pages/Registration/Register.js
-update this
+  update this
 
 ```js
 const handleFinish = async (values) => {
-    try {
-      const response = await RegisterUser(values);
-      if(response.success) {
-        message.success(response.message)
-      }
-      else {
-        throw new Error(response.message)
-      }
-    } catch (error) {
-      message.error(error.message)
+  try {
+    const response = await RegisterUser(values);
+    if (response.success) {
+      message.success(response.message);
+    } else {
+      throw new Error(response.message);
     }
-  };
+  } catch (error) {
+    message.error(error.message);
+  }
+};
 ```
+
 # Now in Authorization Process
 
 in Server/Routes/usersRoute.js include these code
 
 ```js
 import authMiddleware from '../middlewares/authMiddleware.js';
-
 
 // get current user && Protected Api
 
@@ -409,7 +408,9 @@ router.get('/get-current-user', authMiddleware, async (req, res) => {
   }
 });
 ```
+
 for authMiddleware create a folder middlewares
+
 - in Server/middlewares/authMiddleware.js
 
 ```jw
@@ -433,6 +434,7 @@ export default async (req, res, next) => {
 // decryptedToken an objected with the property userID
 
 ```
+
 - in client /src/Pages/Login/Login.js
 
 ```js
@@ -502,9 +504,7 @@ function Login() {
   );
 }
 export default Login;
-
 ```
-
 
 Create a ProtectedPage.js file in Components
 
@@ -556,7 +556,8 @@ export default ProtectedPage;
 ```
 
 - in client/App.js
-wrap the element in PreotectPage 
+  wrap the element in PreotectPage
+
 ```js
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Pages/Home/Home';
@@ -588,8 +589,8 @@ function App() {
 export default App;
 ```
 
-
 - in client /src/Pages/Registration/Register.js
+
 ```js
 import { Button, Form, Input, message } from 'antd';
 import React, { useEffect } from 'react';
@@ -659,13 +660,11 @@ function Register() {
   );
 }
 export default Register;
-
 ```
 
 From Now on Work on the layout of the application
 
 for all the protected pages the layout will be common
-
 
 in Client/src/Components/ProtectedPage.js
 
@@ -705,53 +704,50 @@ function ProtectedPage({ children }) {
   return (
     user && (
       <div>
-
         {/* Header part start here */}
-        <div className=' flex justify-between items-center bg-slate-700 p-5'>
-          <h1 className="text-2xl text-cyan-300">
-            Sell Or Swirl
-          </h1>
-          <div className=' bg-white px-2 py-3 rounded flex gap-1 items-center'>
-          <i className="ri-user-2-fill"></i>
-            <span className='underline cursor-pointer'>{user.name}</span>
-            <i className="ri-logout-circle-r-line ml-4 cursor-pointer"
-            onClick={() => {
-              localStorage.removeItem("token")
-              navigate('/login')              
-            }}
+        <div className=" flex justify-between items-center bg-slate-700 p-5">
+          <h1 className="text-2xl text-cyan-300">Sell Or Swirl</h1>
+          <div className=" bg-white px-2 py-3 rounded flex gap-1 items-center">
+            <i className="ri-user-2-fill"></i>
+            <span className="underline cursor-pointer">{user.name}</span>
+            <i
+              className="ri-logout-circle-r-line ml-4 cursor-pointer"
+              onClick={() => {
+                localStorage.removeItem('token');
+                navigate('/login');
+              }}
             ></i>
           </div>
         </div>
 
         {/* Content */}
-        <div className=' p-5'>{children}</div>
+        <div className=" p-5">{children}</div>
       </div>
     )
   );
 }
 export default ProtectedPage;
 ```
+
 Now I'll work on Loader or Spinner part which i'm going to global because that has to be done on many pages
 
-in Client/Redux/loaderSlice.js
+```js
+router.put('/edit-product/:id', authMiddleware, async (req, res) => {
+  try {
+    await Product.findByIdAndUpdate(req.params.id, req.body);
+    res.send({
+      success: true,
+      message: 'Producted updated Successfully',
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+```
 
+Id i am getting in query string which is params and data i am upadating in req.body
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+req.params is an object that contains the route parameters extracted from the URL. In this case, req.params.id is used to access the value of the id parameter in the URL

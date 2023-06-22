@@ -24,22 +24,18 @@ const productSchema = new Schema(
     },
     billavailable: {
       type: String,
-      default: 'No',
       required: true,
     },
     warrantyavailable: {
       type: String,
-      default: 'No',
       required: true,
     },
     accessoriesavailable: {
       type: String,
-      default: 'No',
       required: true,
     },
     boxavailable: {
       type: String,
-      default: 'No',
       required: true,
     },
     images: {

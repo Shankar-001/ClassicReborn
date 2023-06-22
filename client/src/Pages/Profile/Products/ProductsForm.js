@@ -1,9 +1,10 @@
 import { Col, Form, Input, Modal, Row, Tabs, message } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SetLoader } from '../../../Redux/lodersSlice';
-import { AddProduct } from '../../../apicalls/products';
+import { AddProduct, EditProduct } from '../../../apicalls/products';
+import Images from './Images';
 
 const additionalOptions = [
   {
@@ -35,20 +36,28 @@ function ProductsForm({
   showProductForm,
   setShowProductForm,
   selectedProduct,
-  getdata,
+  getData,
 }) {
+  const [selectedTab = '1', setSelectedTab] = useState('1')
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
   const handleFinish = async (values) => {
     try {
-      values.seller = user._id;
-      values.status = 'Pending';
       dispatch(SetLoader(true));
-      const response = await AddProduct(values);
+
+      let response = null;
+      if (selectedProduct) {
+        response = await EditProduct(selectedProduct._id, values);
+      } else {
+        values.seller = user._id;
+        values.status = 'Pending';
+        response = await AddProduct(values);
+      }
+
       dispatch(SetLoader(false));
       if (response.success) {
         message.success(response.message);
-        getdata()
+        getData();
         setShowProductForm(false);
       } else {
         message.error(response.message);
@@ -74,13 +83,17 @@ function ProductsForm({
       onOk={() => {
         formRef.current.submit();
       }}
+      {...(selectedTab === '2' && {footer: false})}
     >
       <div>
         <h1 className="text-primary text-2xl text-center font-semibold uppercase">
           {selectedProduct ? 'Edit Product' : 'Add Product'}
         </h1>
 
-        <Tabs defaultActiveKey="1">
+        <Tabs defaultActiveKey="1"
+        activeKey={selectedTab}
+        onChange={(key) => setSelectedTab(key)}
+        >
           <Tabs.TabPane tab="General Info" key="1">
             <Form layout="vertical" ref={formRef} onFinish={handleFinish}>
               <Form.Item label="Product Name" name="name" rules={rules}>
@@ -122,7 +135,7 @@ function ProductsForm({
               <div className="flex gap-12">
                 {additionalOptions.map((item, index) => {
                   return (
-                    <Form.Item key={index} label={item.label} name={item.name}>
+                    <Form.Item key={index} label={item.label} name={item.name} rules={rules}>
                       <select
                         style={{ borderRadius: '5px' }}
                         value={item.name}
@@ -132,6 +145,7 @@ function ProductsForm({
                           });
                         }}
                       >
+                        <option value="">Select</option>
                         <option value="no">No</option>
                         <option value="yes">Yes</option>
                       </select>
@@ -142,8 +156,8 @@ function ProductsForm({
             </Form>
           </Tabs.TabPane>
 
-          <Tabs.TabPane tab="Images" key="2">
-            <h1>Upload Product Image</h1>
+          <Tabs.TabPane tab="Images" key="2" disabled={!selectedProduct}>
+            <Images selectedProduct={selectedProduct} setShowProductForm={setShowProductForm} getData={getData} />
           </Tabs.TabPane>
         </Tabs>
       </div>
