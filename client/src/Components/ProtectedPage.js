@@ -42,7 +42,7 @@ function ProtectedPage({ children }) {
       <div>
         {/* Header part start here */}
         <div className=" flex justify-between items-center bg-slate-700 p-5">
-          <h1 className="text-2xl text-cyan-300">Sell Or Swirl</h1>
+          <h1 className="text-2xl text-white">Sell Or Swirl</h1>
           <div className=" bg-white px-2 py-3 rounded flex gap-1 items-center">
             <i className="ri-user-2-fill"></i>
             <span className="underline cursor-pointer" onClick={() => navigate('/profile')}>{user.name}</span>
