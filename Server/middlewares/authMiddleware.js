@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
 
-export default async (req, res, next) => {
+module.exports = async (req, res, next) => {
   try {
     const token = req.header('authorization').split(' ')[1]; // splitting a string it becomes an array
     const decryptedToken = jwt.verify(token, process.env.JWT_SECRET); // to decrypt use jwt.verify..

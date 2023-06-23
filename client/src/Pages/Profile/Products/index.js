@@ -120,7 +120,13 @@ function Products() {
         </Button>
       </div>
 
-      <Table columns={columns} dataSource={products} />
+      <Table
+        columns={columns}
+        dataSource={products.map((product) => ({
+          ...product,
+          key: product._id, // Assigning unique key prop for each product
+        }))}
+      />
 
       {showProductForm && (
         <ProductsForm

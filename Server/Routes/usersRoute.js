@@ -1,8 +1,8 @@
-import { Router } from 'express';
-import User from '../Models/userModel.js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import authMiddleware from '../middlewares/authMiddleware.js';
+const { Router } = require('express');
+const User = require('../Models/userModel.js');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const authMiddleware = require('../middlewares/authMiddleware.js');
 
 const router = Router();
 
@@ -102,4 +102,4 @@ router.get('/get-current-user', authMiddleware, async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

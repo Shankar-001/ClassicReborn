@@ -1,5 +1,6 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
+
 const productSchema = new Schema(
   {
     name: {
@@ -34,23 +35,23 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
-    boxavailable: {
-      type: String,
-      required: true,
-    },
     images: {
       type: Array,
       default: [],
       required: true,
     },
+    boxavailable: {
+      type: String,
+      required: true,
+    },
     seller: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+      ref: 'users',
       required: true,
     },
     status: {
       type: String,
-      default: "Pending",
+      default: 'Pending',
       required: true,
     },
   },
@@ -60,4 +61,4 @@ const productSchema = new Schema(
 );
 
 const Product = mongoose.model('products', productSchema);
-export default Product;
+module.exports = Product;
