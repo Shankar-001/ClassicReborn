@@ -24,9 +24,14 @@ router.post('/add-product', authMiddleware, async (req, res) => {
 });
 
 // Fetch all products
-router.get('/get-products', async (req, res) => {
+router.post('/get-products', async (req, res) => {
   try {
-    const products = await Product.find(); // .sort({ createdAt: -1 }) for sorted with date
+    const { seller, categories = [], age = [] } = req.body;
+    let filters = {};
+    if (seller) {
+      filters.seller = seller;
+    }
+    const products = await Product.find(filters).populate('seller'); // .sort({ createdAt: -1 }) for sorted with date
     res.send({
       success: true,
       products,
@@ -106,5 +111,34 @@ router.post(
     }
   }
 );
+
+//Update Product Status
+router.put('/update-product-status/:id', authMiddleware, async (req, res) => {
+  try {
+    const { status } = req.body;
+    await Product.findByIdAndUpdate(req.params.id, {
+      status,
+    });
+
+    // send notification to seller
+    // const newNotification = new Notification({
+    //   user: updateProduct.seller,
+    //   message: `Your Product ${updateroduct.name} has been ${status}`,
+    //   title: 'Product Status Updated',
+    //   onClick: `/profile`,
+    //   read: false,
+    // });
+    // await newNotification.save();
+    res.send({
+      success: true,
+      message: 'Product Status Updated Successfully',
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
 module.exports = router;

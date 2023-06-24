@@ -7,7 +7,7 @@ import { SetLoader } from '../Redux/lodersSlice';
 import { SetUser } from '../Redux/usersSlice';
 
 function ProtectedPage({ children }) {
-  const {user} = useSelector((state) => state.users)
+  const { user } = useSelector((state) => state.users);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -17,7 +17,7 @@ function ProtectedPage({ children }) {
       const response = await GetCurrentUser();
       dispatch(SetLoader(false));
       if (response.success) {
-        dispatch(SetUser(response.data))
+        dispatch(SetUser(response.data));
       } else {
         navigate('/login');
         message.error(response.message);
@@ -42,16 +42,33 @@ function ProtectedPage({ children }) {
       <div>
         {/* Header part start here */}
         <div className=" flex justify-between items-center bg-slate-700 p-5">
-          <h1 className="text-2xl text-white">Sell Or Swirl</h1>
+          <h1
+            className="text-2xl text-white cursor-pointer"
+            onClick={() => navigate('/')}
+          >
+            Sell Or Swirl
+          </h1>
           <div className=" bg-white px-2 py-3 rounded flex gap-1 items-center">
             <i className="ri-user-2-fill"></i>
-            <span className="underline cursor-pointer" onClick={() => navigate('/profile')}>{user.name}</span>
+            <span
+              className="underline cursor-pointer"
+              onClick={() => {
+                if (user.role === 'user') {
+                  navigate('/profile');
+                } else {
+                  navigate('/admin');
+                }
+              }}
+            >
+              {user.name}
+            </span>
             <i
               className="ri-logout-circle-r-line ml-4 cursor-pointer"
               onClick={() => {
                 localStorage.removeItem('token');
                 dispatch(SetLoader(false));
                 navigate('/login');
+                window.location.reload();
               }}
             ></i>
           </div>

@@ -1,21 +1,22 @@
 import { Button, Table, message } from 'antd';
 import { useEffect, useState } from 'react';
 import ProductsForm from './ProductsForm';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { SetLoader } from '../../../Redux/lodersSlice';
 import { DeleteProduct, GetProducts } from '../../../apicalls/products';
-import moment from 'moment'
+import moment from 'moment';
 
 function Products() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showProductForm, setShowProductForm] = useState(false);
   const [products, setProducts] = useState([]);
+  const { user } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
   const getData = async () => {
     try {
       dispatch(SetLoader(true));
-      const response = await GetProducts();
+      const response = await GetProducts({ seller: user._id });
       dispatch(SetLoader(false));
       if (response.success) {
         setProducts(response.products);
@@ -32,22 +33,21 @@ function Products() {
 
   const deleteProduct = async (id) => {
     try {
-      dispatch(SetLoader(true))
+      dispatch(SetLoader(true));
       const response = await DeleteProduct(id);
       dispatch(SetLoader(false));
-      if(response.success) {
+      if (response.success) {
         message.success(response.message);
         getData();
-      }
-      else {
+      } else {
         dispatch(SetLoader(false));
         message.error(response.message);
       }
     } catch (error) {
       dispatch(SetLoader(false));
-      message.error(error.message)
+      message.error(error.message);
     }
-  }
+  };
 
   const columns = [
     {
@@ -77,7 +77,8 @@ function Products() {
     {
       title: 'Added On',
       dataIndex: 'createdAt',
-      render : (text, record) => moment(record.createdAt).format("DD-MM-YYYY hh:mm A"),
+      render: (text, record) =>
+        moment(record.createdAt).format('DD-MM-YYYY hh:mm A'),
     },
     {
       title: 'Action',
@@ -97,7 +98,7 @@ function Products() {
               className="ri-delete-bin-2-line"
               style={{ fontSize: '20px' }}
               onClick={() => {
-                deleteProduct(record._id)
+                deleteProduct(record._id);
               }}
             ></i>
           </div>

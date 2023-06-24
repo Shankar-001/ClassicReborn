@@ -25,6 +25,7 @@ function Login() {
         message.success(response.message);
         localStorage.setItem('token', response.token);
         navigate('/');
+        window.location.reload();
       } else {
         throw new Error(response.message);
       }
