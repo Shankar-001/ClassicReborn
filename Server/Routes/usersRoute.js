@@ -49,6 +49,10 @@ router.post('/login', async (req, res) => {
     if (!user) {
       throw new Error('User does not exists! Register first');
     }
+    //check if user active or not
+    if(user.status !== 'Active') {
+      throw new Error("The account is banned! Please Contact Admin")
+    }
 
     // check password
     const validPaswword = await bcrypt.compare(
@@ -94,6 +98,41 @@ router.get('/get-current-user', authMiddleware, async (req, res) => {
       message: 'User Fetched Successfully',
       data: user,
     });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// Get all users
+
+router.get('/get-users', authMiddleware, async (req, res) => {
+  try {
+    const users = await User.find();
+    res.send({
+      success: true,
+      message: 'Users Fetched Successfully',
+      data: users,
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// Update user Status
+
+router.put('/update-user-status/:id', authMiddleware, async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.params.id, req.body)
+    res.send({
+      success: true,
+      message: "User Status Updated Successfully"
+    })
   } catch (error) {
     res.send({
       success: false,

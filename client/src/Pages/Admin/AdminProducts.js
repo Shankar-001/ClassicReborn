@@ -25,15 +25,18 @@ function Products() {
 
   const onStatusUpdate = async (id, status) => {
     try {
-        dispatch(SetLoader(true))
-        const response = await UploadProductStatus(id, {status})
-        dispatch(SetLoader(false))
-        if(response.success) {
-            getData();
-        }
+      dispatch(SetLoader(true));
+      const response = await UploadProductStatus(id, status);
+      dispatch(SetLoader(false));
+      if (response.success) {
+        message.success(response.message);
+        getData();
+      } else {
+        throw new Error(response.message);
+      }
     } catch (error) {
-        dispatch(SetLoader(false))
-        message.error(error.message)
+      dispatch(SetLoader(false));
+      message.error(error.message);
     }
   };
 
@@ -72,6 +75,9 @@ function Products() {
     {
       title: 'Status',
       dataIndex: 'status',
+      render: (text, record) => {
+        return record.status.toUpperCase();
+      },
     },
     {
       title: 'Added On',
@@ -116,6 +122,14 @@ function Products() {
                 onClick={() => onStatusUpdate(_id, 'Blocked')}
               >
                 Block
+              </span>
+            )}
+            {status === 'Rejected' && (
+              <span
+                className="underline cursor-pointer"
+                onClick={() => onStatusUpdate(_id, 'Pending')}
+              >
+                Retrieve
               </span>
             )}
             {status === 'Blocked' && (
