@@ -33,4 +33,6 @@ table {
   border: #746281 1px solid !important;
   border-radius: 2px;
 }
-
+.max-width{
+  max-width: max-content !important;
+}
