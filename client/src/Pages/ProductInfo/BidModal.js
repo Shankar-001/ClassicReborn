@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SetLoader } from '../../Redux/lodersSlice';
 import { PlaceNewBid } from '../../apicalls/bids';
+import { AddNotification } from '../../apicalls/notifications';
 
 function BidModal({ showBidModal, setShowBidModal, product, reloadData }) {
   const { user } = useSelector((state) => state.users);
@@ -22,6 +23,13 @@ function BidModal({ showBidModal, setShowBidModal, product, reloadData }) {
       dispatch(SetLoader(false));
       if (response.success) {
         message.success('Bid Added Successfully');
+        await AddNotification({
+          title: "A new bid has been placed",
+          message: `A new bid has been placed on your product ${product.name} by ${user.name} for \u20B9 ${values.bidAmount}`,
+          user: product.seller._id,
+          onClick: `/profile`,
+          read: false,
+        });
         reloadData();
         setShowBidModal(false);
       } else {
@@ -32,6 +40,7 @@ function BidModal({ showBidModal, setShowBidModal, product, reloadData }) {
       message.error(error.message);
     }
   };
+  
 
   return (
     <Modal

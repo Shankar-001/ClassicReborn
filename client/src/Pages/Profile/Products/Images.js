@@ -43,10 +43,10 @@ function Images({ selectedProduct, setShowProductForm, getData }) {
       if (response.success) {
         message.success(response.message);
         setImages(updatedImagesArray);
+        setFile(null);
         getData();
-      }
-      else {
-        throw new Error(response.message)
+      } else {
+        throw new Error(response.message);
       }
       dispatch(SetLoader(true));
     } catch (error) {
@@ -77,6 +77,7 @@ function Images({ selectedProduct, setShowProductForm, getData }) {
           setFile(info.file);
           setShowPreview(true);
         }}
+        fileList={file ? [file] : []}
         showUploadList={showPreview}
       >
         <Button type="default">Upload Image</Button>

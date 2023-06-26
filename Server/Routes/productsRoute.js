@@ -47,7 +47,7 @@ router.post('/get-products', async (req, res) => {
       });
     }
 
-    const products = await Product.find(filters).populate('seller'); // .sort({ createdAt: -1 }) for sorted with date
+    const products = await Product.find(filters).populate('seller').sort({ createdAt: -1 }); // .sort({ createdAt: -1 }) for sorted with date
     res.send({
       success: true,
       data: products,

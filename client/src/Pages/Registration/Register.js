@@ -20,9 +20,9 @@ function Register() {
     try {
       dispatch(SetLoader(true));
       const response = await RegisterUser(values);
-      navigate('/login');
       dispatch(SetLoader(false));
       if (response.success) {
+        navigate('/login');
         message.success(response.message);
       } else {
         throw new Error(response.message);
@@ -44,7 +44,7 @@ function Register() {
       <div className=" bg-white p-5 rounded w-[550px]">
         {' '}
         {/* border border-solid border-gray-800 */}
-        <h1 className=" text-gray-700">Register</h1>
+        <h1 className=" text-gray-700 text-xl">Register</h1>
         <Divider />
         <Form layout="vertical" onFinish={handleFinish}>
           <Form.Item label="Name" name="name" rules={validation}>

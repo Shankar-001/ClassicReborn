@@ -45,7 +45,7 @@ function Login() {
     <div className="h-screen bg-primary flex justify-center items-center ">
       <div className=" bg-white p-5 rounded w-[550px]">
         {/* border border-solid border-gray-800 */}
-        <h1 className=" text-gray-700">Login</h1>
+        <h1 className=" text-gray-700 text-xl">Login</h1>
         <Divider />
         <Form layout="vertical" onFinish={handleFinish}>
           <Form.Item label="Email" name="email" rules={validation}>
