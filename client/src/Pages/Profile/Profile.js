@@ -1,11 +1,14 @@
 import { Tabs } from 'antd';
 import Products from './Products';
 import Bids from './UserBids';
+import { useSelector } from 'react-redux';
+import General from './General/General';
 
 
 
 
 function Profile() {
+  const {user} = useSelector(state => state.users)
   return (
     <div>
       <Tabs defaultActiveKey="1">
@@ -16,7 +19,7 @@ function Profile() {
           <Bids />
         </Tabs.TabPane>
         <Tabs.TabPane tab="General" key="3">
-          <h1>General</h1>
+          <General />
         </Tabs.TabPane>
       </Tabs>
     </div>

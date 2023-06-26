@@ -85,7 +85,9 @@ function Bids() {
     <div className="flex gap-3 flex-col">
       <Table
         columns={columns}
-        dataSource={bidsData.map((bid) => ({ ...bid, key: bid._id }))}
+        dataSource={bidsData
+          .filter((bid) => bid.product && bid.product.name) // Filter bids with product name
+          .map((bid) => ({ ...bid, key: bid._id }))}
       />
     </div>
   );
