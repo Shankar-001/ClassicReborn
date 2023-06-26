@@ -1,5 +1,6 @@
 import { Tabs } from 'antd';
 import Products from './Products';
+import Bids from './UserBids';
 
 
 
@@ -12,7 +13,7 @@ function Profile() {
           <Products />
         </Tabs.TabPane>
         <Tabs.TabPane tab="Bids" key="2">
-          <h1>Bids</h1>
+          <Bids />
         </Tabs.TabPane>
         <Tabs.TabPane tab="General" key="3">
           <h1>General</h1>
