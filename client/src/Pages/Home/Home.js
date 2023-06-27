@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { SetLoader } from '../../Redux/lodersSlice';
 import { GetProducts } from '../../apicalls/products';
 import { message } from 'antd';
-import img from '../../Temporary/temporary.jpg';
 import Divider from '../../Components/Divider';
 import Filters from './Filters';
 
@@ -77,11 +76,10 @@ function Home() {
                 onClick={() => navigate(`/product/${product._id}`)}
               >
                 <img
-                  src={img}
+                  src={product.images[0]}
                   alt={product.name}
                   className="w-full h-52 p-5 rounded-md object-cover"
                 />
-                {/* product.images[0] */}
                 <div className="px-5 flex flex-col">
                   <h1 className="text-lg font-semibold">{product.name}</h1>
                   <p className="text-sm">{product.description}</p>

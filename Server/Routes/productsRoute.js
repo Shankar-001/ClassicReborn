@@ -161,14 +161,14 @@ router.post(
 router.put('/update-product-status/:id', authMiddleware, async (req, res) => {
   try {
     const { status } = req.body;
-    await Product.findByIdAndUpdate(req.params.id, {
+    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
       status,
     });
 
     // send notification to seller
     const newNotification = new Notification({
-      user: updateProduct.seller,
-      message: `Your Product ${updateroduct.name} has been ${status}`,
+      user: updatedProduct.seller,
+      message: `Your Product ${updatedProduct.name} has been ${status}`,
       title: 'Product Status Updated',
       onClick: `/profile`,
       read: false,
