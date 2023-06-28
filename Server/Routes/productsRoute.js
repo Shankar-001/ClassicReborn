@@ -3,6 +3,7 @@ const Product = require('../Models/productModel.js');
 const authMiddleware = require('../middlewares/authMiddleware.js');
 const cloudinary = require('../Config/cloudinaryConfig.js');
 const multer = require('multer');
+const jwt = require("jsonwebtoken")
 const User = require('../Models/userModel.js');
 const Notification = require('../Models/notificationModel.js');
 
@@ -13,12 +14,20 @@ router.post('/add-product', authMiddleware, async (req, res) => {
   try {
     const newProduct = new Product(req.body);
     await newProduct.save();
+
+    const token = req.header("authorization").split(" ")[1];
+    const decryptedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const id = (decryptedToken.userId)
+    const seller = await User.findById(id);
+    const { name } = seller;
+
+
     // Send Notification To Admin
     const admins = await User.find({ role: "admin" });
     admins.forEach(async (admin) => {
       const newNotification = new Notification({
         user: admin._id,
-        message: `New product added by ${req.user.name}`,
+        message: `New product added by ${name}`,
         title: "New Product",
         onClick: `/admin`,
         read: false,
