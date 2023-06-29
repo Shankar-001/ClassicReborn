@@ -44,7 +44,7 @@ function Register() {
       <div className=" bg-white p-5 rounded w-[550px]">
         {' '}
         {/* border border-solid border-gray-800 */}
-        <h1 className=" text-gray-700 text-xl">Register</h1>
+        <h1 className=' text-slate-700 text-xl'>SellOrSwirl - <span className=" text-gray-700 text-xl">SignUp</span></h1>
         <Divider />
         <Form layout="vertical" onFinish={handleFinish}>
           <Form.Item label="Name" name="name" rules={validation}>

@@ -6,11 +6,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SetLoader } from '../Redux/lodersSlice';
 import { SetUser } from '../Redux/usersSlice';
 import Notifications from './Notifications';
-import { GetAllNotifications, ReadAllNotifications } from '../apicalls/notifications';
+import {
+  GetAllNotifications,
+  ReadAllNotifications,
+} from '../apicalls/notifications';
+import ConfirmationModal from './ConfirmationPage';
 
 function ProtectedPage({ children }) {
   const [notifications = [], setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
   const { user } = useSelector((state) => state.users);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -57,6 +62,26 @@ function ProtectedPage({ children }) {
     } catch (error) {
       message.error(error.message);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    dispatch(SetLoader(false));
+    navigate('/login');
+    window.location.reload();
+  };
+
+  const showLogoutConfirmationModal = () => {
+    setShowLogoutConfirmation(true);
+  };
+
+  const handleLogoutConfirmation = () => {
+    handleLogout();
+    setShowLogoutConfirmation(false);
+  };
+
+  const handleLogoutCancel = () => {
+    setShowLogoutConfirmation(false);
   };
 
   useEffect(() => {
@@ -111,12 +136,7 @@ function ProtectedPage({ children }) {
             </Badge>
             <i
               className="ri-logout-circle-r-line ml-2 cursor-pointer"
-              onClick={() => {
-                localStorage.removeItem('token');
-                dispatch(SetLoader(false));
-                navigate('/login');
-                window.location.reload();
-              }}
+              onClick={showLogoutConfirmationModal}
             ></i>
           </div>
         </div>
@@ -132,6 +152,11 @@ function ProtectedPage({ children }) {
             setShowNotifications={setShowNotifications}
           />
         }
+        <ConfirmationModal
+          visible={showLogoutConfirmation}
+          onConfirm={handleLogoutConfirmation}
+          onCancel={handleLogoutCancel}
+        />
       </div>
     )
   );

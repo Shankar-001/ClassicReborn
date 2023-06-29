@@ -111,7 +111,7 @@ function ProductsForm({
                 </Col>
                 <Col span={8}>
                   <Form.Item
-                    label="How old is the product?"
+                    label="How old is the product? (in Years)"
                     name="age"
                     rules={rules}
                   >

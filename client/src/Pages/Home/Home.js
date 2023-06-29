@@ -82,7 +82,9 @@ function Home() {
                 />
                 <div className="px-5 flex flex-col">
                   <h1 className="text-lg font-semibold">{product.name}</h1>
-                  <p className="text-sm">{product.description}</p>
+                  <p className="text-sm">
+                    {product.age} {product.age === 1 ? ' year' : ' years'} old
+                  </p>
                   <Divider />
                   <span className="text-xl font-semibold text-rose-600">
                     &#8377; {product.price}

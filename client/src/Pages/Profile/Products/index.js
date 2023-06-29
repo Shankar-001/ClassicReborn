@@ -53,12 +53,21 @@ function Products() {
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
+      title: "Product",
+      dataIndex: "image",
+      render: (text, record) => {
+        return (
+          <img
+            src={record?.images?.length > 0 ? record.images[0] : ""}
+            alt=""
+            className="w-20 h-20 object-cover rounded-md"
+          />
+        );
+      },
     },
     {
-      title: 'Description',
-      dataIndex: 'description',
+      title: 'Name',
+      dataIndex: 'name',
     },
     {
       title: 'Price',
@@ -67,6 +76,9 @@ function Products() {
     {
       title: 'How old is the product?',
       dataIndex: 'age',
+      render: (text, record) => {
+        return <span>{record.age} {record.age === 1 ? ' year' : ' years'} old</span>
+      }
     },
     {
       title: 'Category',
