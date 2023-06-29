@@ -179,7 +179,7 @@ router.put('/update-product-status/:id', authMiddleware, async (req, res) => {
       user: updatedProduct.seller,
       message: `Your Product ${updatedProduct.name} has been ${status}`,
       title: 'Product Status Updated',
-      onClick: `/profile`,
+      onClick: `/product/${updatedProduct._id}`,
       read: false,
     });
     

@@ -124,7 +124,7 @@ function ProtectedPage({ children }) {
                   .length
               }
               onClick={() => {
-                readNotifications();
+                // readNotifications();
                 setShowNotifications(true);
               }}
               className="cursor-pointer ml-2"
