@@ -4,7 +4,7 @@ const ConfirmationModal = ({ visible, onConfirm, onCancel }) => {
   return (
     <Modal
       title="Confirmation"
-      visible={visible}
+      open={visible}
       onCancel={onCancel}
       footer={[
         <Button key="cancel" onClick={onCancel}>

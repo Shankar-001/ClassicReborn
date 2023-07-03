@@ -123,7 +123,7 @@ function ProductsForm({
                   <Form.Item label="Category" name="category" rules={rules}>
                     <select style={{ borderRadius: '5px' }}>
                       <option value="">Select</option>
-                      <option value="elctronics">Electronics</option>
+                      <option value="electronics">Electronics</option>
                       <option value="home">Home</option>
                       <option value="sports">Sport</option>
                       <option value="others">Others</option>

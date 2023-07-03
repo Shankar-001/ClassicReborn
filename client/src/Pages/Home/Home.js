@@ -15,6 +15,7 @@ function Home() {
     category: [],
     age: [],
   });
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
@@ -32,6 +33,14 @@ function Home() {
       message.error(error.message);
     }
   };
+
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     getData();
@@ -58,9 +67,11 @@ function Home() {
           )}
           <input
             type="text"
-            // id="product-search"
+            id="product-search"
             placeholder="Search Products here...."
             className="border border-gray-300 rounded border-solid px-2 py-1 h-14 w-full"
+            value={searchQuery}
+            onChange={handleSearch}
           />
         </div>
         <div
@@ -68,7 +79,7 @@ function Home() {
         grid gap-5 ${showFilters ? 'grid-cols-4' : 'grid-cols-5'}
       `}
         >
-          {products?.map((product) => {
+          {filteredProducts?.map((product) => {
             return (
               <div
                 key={product._id}

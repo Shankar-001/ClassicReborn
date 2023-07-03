@@ -11,6 +11,7 @@ import {
   ReadAllNotifications,
 } from '../apicalls/notifications';
 import ConfirmationModal from './ConfirmationPage';
+import Footer from './Footer';
 
 function ProtectedPage({ children }) {
   const [notifications = [], setNotifications] = useState([]);
@@ -142,7 +143,9 @@ function ProtectedPage({ children }) {
         </div>
 
         {/* Content */}
-        <div className=" p-5">{children}</div>
+        <div style={{minHeight: '80vh'}} className=" p-5">{children}</div>
+
+        <Footer />
 
         {
           <Notifications

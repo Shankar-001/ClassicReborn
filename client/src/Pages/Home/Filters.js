@@ -60,10 +60,12 @@ function Filters({ showFilters, setShowFilters, filters, setFilters }) {
 
         <div className="flex flex-col">
           {categories.map((category, index) => {
+            const categoryId = `category-${index}`; // Generate a unique id for each label
             return (
               <div key={index} className="flex items-center gap-2">
                 <input
                   type="checkbox"
+                  id={categoryId} // Use the unique id for the corresponding input
                   name="category"
                   className="max-width"
                   checked={filters.category.includes(category.value)}
@@ -83,7 +85,7 @@ function Filters({ showFilters, setShowFilters, filters, setFilters }) {
                     }
                   }}
                 />
-                <label htmlFor="category">{category.name}</label>
+                <label htmlFor={categoryId}>{category.name}</label>
               </div>
             );
           })}
@@ -93,10 +95,12 @@ function Filters({ showFilters, setShowFilters, filters, setFilters }) {
 
         <div className="flex flex-col">
           {ages.map((age, index) => {
+            const ageId = `age-${index}`;
             return (
               <div key={index} className="flex gap-2 items-center">
                 <input
                   type="checkbox"
+                  id={ageId}
                   name="age"
                   className="max-width"
                   checked={filters.age.includes(age.value)}
@@ -114,7 +118,7 @@ function Filters({ showFilters, setShowFilters, filters, setFilters }) {
                     }
                   }}
                 />
-                <label htmlFor="age">{age.name}</label>
+                <label htmlFor={ageId}>{age.name}</label>
               </div>
             );
           })}
