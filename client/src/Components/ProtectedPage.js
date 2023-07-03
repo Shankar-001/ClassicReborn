@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Avatar, Badge, message } from 'antd';
 import { GetCurrentUser } from '../apicalls/users';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { SetLoader } from '../Redux/lodersSlice';
 import { SetUser } from '../Redux/usersSlice';
@@ -20,6 +20,7 @@ function ProtectedPage({ children }) {
   const { user } = useSelector((state) => state.users);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const validateToken = async () => {
     try {
@@ -105,6 +106,46 @@ function ProtectedPage({ children }) {
           >
             Sell Or Swirl
           </h1>
+          <div className="flex items-center justify-end ">
+            <ul className="flex gap-6 list-none mr-8">
+              <li>
+                <a
+                  href={location.pathname === '/' ? '#' : '/'}
+                  className="text-white text-xl hover:text-gray-600 no-underline hover:bg-gray-200 p-1 hover:rounded"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/#shop"
+                  className="text-white text-xl hover:text-gray-600 no-underline hover:bg-gray-200 p-1 hover:rounded"
+                >
+                  Shop
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/about"
+                  className="text-white text-xl hover:text-gray-600 no-underline hover:bg-gray-200 p-1 hover:rounded"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/about');
+                  }}
+                >
+                  About Us
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#contactUs"
+                  className="text-white text-xl hover:text-gray-600 no-underline hover:bg-gray-200 p-1 hover:rounded"
+                >
+                  Contact Us
+                </a>
+              </li>
+            </ul>
+
           <div className=" bg-white px-2 py-3 rounded flex gap-1 items-center">
             <i className="ri-user-2-fill"></i>
             <span
@@ -116,34 +157,37 @@ function ProtectedPage({ children }) {
                   navigate('/admin');
                 }
               }}
-            >
+              >
               {user.name}
             </span>
             <Badge
               count={
                 notifications?.filter((notification) => !notification.read)
-                  .length
+                .length
               }
               onClick={() => {
                 // readNotifications();
                 setShowNotifications(true);
               }}
               className="cursor-pointer ml-2"
-            >
+              >
               <Avatar
                 shape="circle"
                 icon={<i className="ri-notification-3-line"></i>}
-              />
+                />
             </Badge>
             <i
               className="ri-logout-circle-r-line ml-2 cursor-pointer"
               onClick={showLogoutConfirmationModal}
-            ></i>
+              ></i>
+              </div>
           </div>
         </div>
 
         {/* Content */}
-        <div style={{minHeight: '80vh'}} className=" p-5">{children}</div>
+        <div style={{ minHeight: '80vh' }} className=" p-5">
+          {children}
+        </div>
 
         <Footer />
 

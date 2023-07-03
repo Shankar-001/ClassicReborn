@@ -163,7 +163,7 @@ function ProductInfo() {
                     <div key={bid._id} className="border border-gray-300 border-solid p-3 rounded mt-5">
                       <div className="flex justify-between text-gray-700">
                         <span>Name</span>
-                        <span> {bid.buyer.name}</span>
+                        <span> {bid?.buyer?.name}</span>
                       </div>
                       <div className="flex justify-between text-gray-600">
                         <span>Bid Amount</span>

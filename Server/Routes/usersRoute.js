@@ -20,10 +20,19 @@ router.post('/register', async (req, res) => {
       throw new Error('User already exists');
     }
 
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+
+    if (password !== confirmPassword) {
+      return res.send({ message: 'Confirm Password does not matches', success: false });
+    }
+
     // hash password
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedConfirmPassword = await bcrypt.hash(confirmPassword, salt);
     req.body.password = hashedPassword;
+    req.body.confirmPassword = hashedConfirmPassword;
 
     // create new user
     const newUser = new User(req.body);
@@ -47,11 +56,11 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     // check if user already exists or not
     if (!user) {
-      throw new Error('User does not exists! Register first');
+      throw new Error('Invalid User name or Password');
     }
     //check if user active or not
-    if(user.status !== 'Active') {
-      throw new Error("The account is banned! Please Contact Admin")
+    if (user.status !== 'Active') {
+      throw new Error('The account is banned! Please Contact Admin');
     }
 
     // check password
@@ -61,15 +70,13 @@ router.post('/login', async (req, res) => {
     );
 
     if (!validPaswword) {
-      throw new Error('Password does not match');
+      throw new Error('Invalid User name or Password');
     }
 
     // create token and assign it
     // to encrypt use jwt.sign
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '1d',
-    });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
     // Response
     res.send({
@@ -128,11 +135,11 @@ router.get('/get-users', authMiddleware, async (req, res) => {
 
 router.put('/update-user-status/:id', authMiddleware, async (req, res) => {
   try {
-    await User.findByIdAndUpdate(req.params.id, req.body)
+    await User.findByIdAndUpdate(req.params.id, req.body);
     res.send({
       success: true,
-      message: "User Status Updated Successfully"
-    })
+      message: 'User Status Updated Successfully',
+    });
   } catch (error) {
     res.send({
       success: false,

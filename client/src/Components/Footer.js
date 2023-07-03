@@ -2,7 +2,7 @@ import './FooterStyles.css'
 
 const Footer = () => {
   return (
-    <div className="footer">
+    <div className="footer" id='contactUs'>
       <div className="top">
         <div>
           <h1 className='text-2xl'>Sell Or Swirl</h1>

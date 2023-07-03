@@ -44,7 +44,9 @@ function Register() {
       <div className=" bg-white p-5 rounded w-[550px]">
         {' '}
         {/* border border-solid border-gray-800 */}
-        <h1 className=' text-slate-700 text-xl'>SellOrSwirl - <span className=" text-gray-700 text-xl">SignUp</span></h1>
+        <h1 className=" text-slate-700 text-xl">
+          SellOrSwirl - <span className=" text-gray-700 text-xl">SignUp</span>
+        </h1>
         <Divider />
         <Form layout="vertical" onFinish={handleFinish}>
           <Form.Item label="Name" name="name" rules={validation}>
@@ -54,6 +56,9 @@ function Register() {
             <Input placeholder="Email" />
           </Form.Item>
           <Form.Item label="Password" name="password" rules={validation}>
+            <Input type="password" placeholder="Password" />
+          </Form.Item>
+          <Form.Item label="Confirm Password" name="confirmPassword" rules={validation}>
             <Input type="password" placeholder="Password" />
           </Form.Item>
           <Button type="primary" htmlType="submit" block className="mt-2">

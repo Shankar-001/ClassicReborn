@@ -27,7 +27,7 @@ function BidModal({ showBidModal, setShowBidModal, product, reloadData }) {
           title: "A new bid has been placed",
           message: `A new bid has been placed on your product ${product.name} by ${user.name} for \u20B9 ${values.bidAmount}`,
           user: product.seller._id,
-          onClick: `/profile`,
+          onClick: `/product/${product._id}`,
           read: false,
         });
         reloadData();

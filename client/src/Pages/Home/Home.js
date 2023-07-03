@@ -47,7 +47,7 @@ function Home() {
   }, [filters]);
 
   return (
-    <div className="flex gap-5">
+    <div className="flex gap-5" id="shop">
       {showFilters && (
         <Filters
           showFilters={showFilters}
@@ -74,6 +74,7 @@ function Home() {
             onChange={handleSearch}
           />
         </div>
+
         <div
           className={`
         grid gap-5 ${showFilters ? 'grid-cols-4' : 'grid-cols-5'}

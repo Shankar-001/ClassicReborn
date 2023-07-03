@@ -45,7 +45,9 @@ function Login() {
     <div className="h-screen bg-primary flex justify-center items-center ">
       <div className=" bg-white p-5 rounded w-[550px]">
         {/* border border-solid border-gray-800 */}
-        <h1 className=' text-slate-800 text-xl'>SellOrSwirl - <span className=" text-gray-700 text-xl">Login</span></h1>
+        <h1 className=" text-slate-800 text-xl">
+          SellOrSwirl - <span className=" text-gray-700 text-xl">Login</span>
+        </h1>
         <Divider />
         <Form layout="vertical" onFinish={handleFinish}>
           <Form.Item label="Email" name="email" rules={validation}>
@@ -65,9 +67,26 @@ function Login() {
               </Link>
             </span>
           </div>
+          <p className="mt-2 text-center">
+            <span className="text-xl text-gray-500">
+              Contact us :{' '}
+              <a href="mailto:praveen01.ugec20@iiitranchi.ac.in">
+                <i className="ri-mail-line text-xl mr-1"></i>
+              </a>
+              <a href="https://www.instagram.com/_.witch3r/" target="_blank">
+                <i className="ri-instagram-line text-xl mr-1"></i>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/praveen-shankar-ba289a212/"
+                target="_blank"
+              >
+                <i className="ri-linkedin-fill text-xl mr-1"></i>
+              </a>
+            </span>
+          </p>
         </Form>
       </div>
     </div>
-  );  
+  );
 }
 export default Login;
