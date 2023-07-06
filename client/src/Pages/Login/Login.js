@@ -1,5 +1,5 @@
 import { Button, Form, Input, message } from 'antd';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Divider from '../../Components/Divider';
 import { LoginUser } from '../../apicalls/users';
@@ -14,6 +14,12 @@ const validation = [
 ];
 
 function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleFinish = async (values) => {
@@ -53,8 +59,29 @@ function Login() {
           <Form.Item label="Email" name="email" rules={validation}>
             <Input placeholder="Email" />
           </Form.Item>
-          <Form.Item label="Password" name="password" rules={validation}>
-            <Input type="password" placeholder="Password" />
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={validation}
+          >
+            <div style={{ position: 'relative' }}>
+              <Input
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Password"
+                style={{ paddingRight: '32px' }}
+              />
+              <i
+                className={`ri-eye-${showPassword ? 'line' : 'off-line'}`}
+                onClick={togglePasswordVisibility}
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  right: '8px',
+                  transform: 'translateY(-50%)',
+                  cursor: 'pointer',
+                }}
+              ></i>
+            </div>
           </Form.Item>
           <Button type="primary" htmlType="submit" block className="mt-2">
             Login

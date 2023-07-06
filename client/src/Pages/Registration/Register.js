@@ -22,7 +22,7 @@ const passwordValidation = [
   },
   {
     pattern: /^(?=.*[A-Z])(?=.*\d).{8,}$/,
-    message: 'Passwords must be atleast 8 characters, 1 capital letter, and 1 number.',
+    message: 'Passwords must be at least 8 characters, 1 capital letter, and 1 number.',
     validateTrigger: 'onSubmit',
   },
 ];
@@ -31,6 +31,8 @@ function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPasswordError, setShowPasswordError] = useState(false);
 
   const handleFinish = async (values) => {
@@ -72,6 +74,14 @@ function Register() {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
     <div className="h-screen bg-primary flex justify-center items-center">
       <div className="bg-white p-5 rounded w-[550px]">
@@ -93,10 +103,46 @@ function Register() {
             validateStatus={showPasswordError ? 'error' : ''}
             help={showPasswordError ? passwordValidation[1].message : null}
           >
-            <Input type="password" placeholder="Password" onChange={handlePasswordChange} />
+            <div style={{ position: 'relative' }}>
+              <Input
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Password"
+                onChange={handlePasswordChange}
+              />
+              <i
+                className={`ri-eye-${showPassword ? 'line' : 'off-line'}`}
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  right: '8px',
+                  transform: 'translateY(-50%)',
+                  cursor: 'pointer',
+                }}
+                onClick={togglePasswordVisibility}
+              >
+                
+              </i>
+            </div>
           </Form.Item>
           <Form.Item label="Confirm Password" name="confirmPassword" rules={validation}>
-            <Input type="password" placeholder="Password" />
+            <div style={{ position: 'relative' }}>
+              <Input
+                type={showConfirmPassword ? 'text' : 'password'}
+                placeholder="Confirm Password"
+              />
+              <i
+                className={`ri-eye-${showConfirmPassword ? 'line' : 'off-line'}`}
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  right: '8px',
+                  transform: 'translateY(-50%)',
+                  cursor: 'pointer',
+                }}
+                onClick={toggleConfirmPasswordVisibility}
+              >
+              </i>
+            </div>
           </Form.Item>
           <Button type="primary" htmlType="submit" block className="mt-2">
             Register

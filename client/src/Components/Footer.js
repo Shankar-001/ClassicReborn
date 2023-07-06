@@ -1,16 +1,15 @@
 import './FooterStyles.css';
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
   return (
     <div id="contactUs">
       <div className="footer">
         <div className="top">
-          <div>
-            <h1 className="text-2xl">Sell Or Swirl</h1>
+          <div className="ml-20">
+            <h1 className="text-2xl mt-1">Sell Or Swirl</h1>
             <p>Give New Life to Old Goods.</p>
           </div>
-          <div>
+          <div className=" mr-60">
             <a href="https://www.instagram.com/_.witch3r/" target="_blank">
               <i className="ri-instagram-line"></i>
             </a>

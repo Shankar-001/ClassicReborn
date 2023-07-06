@@ -97,7 +97,6 @@ function ProtectedPage({ children }) {
       validateToken();
       getNotifications();
     } else {
-      message.error('Session Expired Please Login Again');
       navigate('/login');
     }
 
@@ -212,7 +211,7 @@ function ProtectedPage({ children }) {
 
         {showScrollToTop && (
           <div
-            className="fixed bottom-5 right-5 bg-gray-200 p-2 rounded cursor-pointer"
+            className="fixed bottom-52 right-10 bg-gray-200 p-2 rounded cursor-pointer"
             onClick={handleScrollToTop}
           >
             <i className="ri-arrow-up-double-fill"></i>

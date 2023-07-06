@@ -1,6 +1,6 @@
 .footer {
-  padding: 2rem 6rem;
-  background: rgb(62, 146, 159);
+  padding: 1rem 3rem;
+  background: rgb(47, 50, 59);
   color: #fff;
 }
 
@@ -18,7 +18,7 @@
   text-align: start;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin: 0 8rem;
+  margin: 0 4rem;
 }
 
 .top i {
@@ -70,18 +70,22 @@
 }
 
 .copyright {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 @media screen and (max-width: 850px) {
   .footer {
-    padding: 4rem 2rem;
+    padding: 2rem 1rem;
   }
 
   .footer i {
     margin: 1rem 1rem 0 0;
+  }
+  
+  .top i {
+    margin: 1rem 0.5rem 0 0; /* Adjusted margin */
   }
 
   .bottom div {
