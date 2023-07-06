@@ -45,6 +45,12 @@ function ProductsForm({
     try {
       dispatch(SetLoader(true));
 
+      if (values.name.length > 25) {
+        dispatch(SetLoader(false));
+        message.error('Name should not exceed 25 characters.');
+        return;
+      }
+
       let response = null;
       if (selectedProduct) {
         response = await EditProduct(selectedProduct._id, values);

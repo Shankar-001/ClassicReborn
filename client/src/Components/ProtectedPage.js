@@ -21,6 +21,7 @@ function ProtectedPage({ children }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
 
   const validateToken = async () => {
     try {
@@ -86,6 +87,10 @@ function ProtectedPage({ children }) {
     setShowLogoutConfirmation(false);
   };
 
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   useEffect(() => {
     if (localStorage.getItem('token')) {
       validateToken();
@@ -94,18 +99,29 @@ function ProtectedPage({ children }) {
       message.error('Session Expired Please Login Again');
       navigate('/login');
     }
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setShowScrollToTop(scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
+
   return (
     user && (
       <div>
         {/* Header part start here */}
-        <div className=" flex justify-between items-center bg-slate-700 p-5">
+        <div className="flex justify-between items-center bg-slate-700 p-5 max-h-20">
           <h1
             className="text-2xl text-white cursor-pointer"
             onClick={() => navigate('/')}
           >
-            Sell Or Swirl
-          </h1>
+            Sell Or Swirl          </h1>
           <div className="flex items-center justify-end ">
             <ul className="flex gap-6 list-none mr-8">
               <li>
@@ -146,59 +162,66 @@ function ProtectedPage({ children }) {
               </li>
             </ul>
 
-          <div className=" bg-white px-2 py-3 rounded flex gap-1 items-center">
-            <i className="ri-user-2-fill"></i>
-            <span
-              className="underline cursor-pointer"
-              onClick={() => {
-                if (user.role === 'user') {
-                  navigate('/profile');
-                } else {
-                  navigate('/admin');
+            <div className="bg-white px-2 py-3 rounded flex gap-1 items-center">
+              <i className="ri-user-2-fill"></i>
+              <span
+                className="underline cursor-pointer"
+                onClick={() => {
+                  if (user.role === 'user') {
+                    navigate('/profile');
+                  } else {
+                    navigate('/admin');
+                  }
+                }}
+              >
+                {user.name}
+              </span>
+              <Badge
+                count={
+                  notifications?.filter((notification) => !notification.read)
+                    .length
                 }
-              }}
+                onClick={() => {
+                  // readNotifications();
+                  setShowNotifications(true);
+                }}
+                className="cursor-pointer ml-2"
               >
-              {user.name}
-            </span>
-            <Badge
-              count={
-                notifications?.filter((notification) => !notification.read)
-                .length
-              }
-              onClick={() => {
-                // readNotifications();
-                setShowNotifications(true);
-              }}
-              className="cursor-pointer ml-2"
-              >
-              <Avatar
-                shape="circle"
-                icon={<i className="ri-notification-3-line"></i>}
+                <Avatar
+                  shape="circle"
+                  icon={<i className="ri-notification-3-line"></i>}
                 />
-            </Badge>
-            <i
-              className="ri-logout-circle-r-line ml-2 cursor-pointer"
-              onClick={showLogoutConfirmationModal}
+              </Badge>
+              <i
+                className="ri-logout-circle-r-line ml-2 cursor-pointer"
+                onClick={showLogoutConfirmationModal}
               ></i>
-              </div>
+            </div>
           </div>
         </div>
 
         {/* Content */}
-        <div style={{ minHeight: '80vh' }} className=" p-5">
+        <div style={{ minHeight: '80vh' }} className="p-5">
           {children}
         </div>
 
         <Footer />
 
-        {
-          <Notifications
-            notifications={notifications}
-            reloadNotifications={readNotifications}
-            showNotifications={showNotifications}
-            setShowNotifications={setShowNotifications}
-          />
-        }
+        {showScrollToTop && (
+          <div
+            className="fixed bottom-5 right-5 bg-gray-200 p-2 rounded cursor-pointer"
+            onClick={handleScrollToTop}
+          >
+            <i className="ri-arrow-up-double-fill"></i>
+          </div>
+        )}
+
+        <Notifications
+          notifications={notifications}
+          reloadNotifications={readNotifications}
+          showNotifications={showNotifications}
+          setShowNotifications={setShowNotifications}
+        />
         <ConfirmationModal
           visible={showLogoutConfirmation}
           onConfirm={handleLogoutConfirmation}
@@ -208,4 +231,5 @@ function ProtectedPage({ children }) {
     )
   );
 }
+
 export default ProtectedPage;
