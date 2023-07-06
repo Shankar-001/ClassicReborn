@@ -57,3 +57,15 @@ export const UpdateUserStatus = async (id, status) => {
     return error.message;
   }
 };
+
+// update user info
+
+export const updateUserProfile = async (payload) => {
+  try {
+    const response = await axiosInstance.put('/api/users/update-user-profile', payload);
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+};
+

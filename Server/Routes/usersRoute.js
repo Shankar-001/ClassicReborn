@@ -24,7 +24,10 @@ router.post('/register', async (req, res) => {
     const confirmPassword = req.body.confirmPassword;
 
     if (password !== confirmPassword) {
-      return res.send({ message: 'Confirm Password does not matches', success: false });
+      return res.send({
+        message: 'Confirm Password does not matches',
+        success: false,
+      });
     }
 
     // hash password
@@ -147,5 +150,26 @@ router.put('/update-user-status/:id', authMiddleware, async (req, res) => {
     });
   }
 });
+
+router.put('/update-user-profile', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.body.userId;
+    const updatedUser = req.body;
+
+    const user = await User.findByIdAndUpdate(userId, updatedUser);
+
+    res.send({
+      success: true,
+      message: 'User Profile Updated Successfully',
+      data: user,
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 
 module.exports = router;

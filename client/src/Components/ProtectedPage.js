@@ -12,6 +12,7 @@ import {
 } from '../apicalls/notifications';
 import ConfirmationModal from './ConfirmationPage';
 import Footer from './Footer';
+import img  from './logo.png';
 
 function ProtectedPage({ children }) {
   const [notifications = [], setNotifications] = useState([]);
@@ -121,7 +122,9 @@ function ProtectedPage({ children }) {
             className="text-2xl text-white cursor-pointer"
             onClick={() => navigate('/')}
           >
-            Sell Or Swirl          </h1>
+            <img src={img} alt="Sell Or Swirl" style={{ maxWidth: '40%', height: '30%' }} />
+
+          </h1>
           <div className="flex items-center justify-end ">
             <ul className="flex gap-6 list-none mr-8">
               <li>

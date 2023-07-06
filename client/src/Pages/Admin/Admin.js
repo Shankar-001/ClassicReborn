@@ -3,21 +3,28 @@ import Products from './AdminProducts';
 import Users from './Users';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Admin() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useSelector((state) => state.users);
 
   useEffect(() => {
     if (user.role !== 'admin') {
       navigate('/');
     }
-  }, []);
+  }, [user, navigate]);
+
+  const activeTab = new URLSearchParams(location.search).get('tab') || '1';
+
+  const handleTabChange = (key) => {
+    navigate(`?tab=${key}`);
+  };
 
   return (
     <div>
-      <Tabs defaultActiveKey="1">
+      <Tabs activeKey={activeTab} onChange={handleTabChange}>
         <Tabs.TabPane tab="Products" key="1">
           <Products />
         </Tabs.TabPane>
@@ -28,4 +35,5 @@ function Admin() {
     </div>
   );
 }
+
 export default Admin;

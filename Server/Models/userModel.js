@@ -19,7 +19,13 @@ const userSchema = new Schema(
     confirmPassword: {
       type: String,
       required: true,
-  },
+    },
+    contact: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
     role: {
       type: String,
       default: 'user',
