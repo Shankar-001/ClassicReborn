@@ -8,6 +8,7 @@ import Loader from './Components/Loader';
 import { useSelector } from 'react-redux';
 import Admin from './Pages/Admin/Admin';
 import ProductInfo from './Pages/ProductInfo/ProductInfo';
+import AboutUs from './Pages/About/AboutUs';
 
 function App() {
   const { isLoading } = useSelector((state) => state.loaders);
@@ -21,6 +22,14 @@ function App() {
             element={
               <ProtectedPage>
                 <Home />
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <ProtectedPage>
+                <AboutUs />
               </ProtectedPage>
             }
           />

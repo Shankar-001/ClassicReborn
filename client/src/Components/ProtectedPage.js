@@ -87,6 +87,7 @@ function ProtectedPage({ children }) {
   const handleLogoutCancel = () => {
     setShowLogoutConfirmation(false);
   };
+  
 
   const handleScrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -118,8 +119,7 @@ function ProtectedPage({ children }) {
         {/* Header part start here */}
         <div className="flex justify-between items-center bg-slate-700 p-5 max-h-20">
           <h1
-            className="text-2xl text-white cursor-pointer"
-            onClick={() => navigate('/')}
+            className="text-2xl text-white"
           >
             <img src={img} alt="Sell Or Swirl" style={{ maxWidth: '40%', height: '30%' }} />
 
@@ -147,8 +147,8 @@ function ProtectedPage({ children }) {
                   href="/about"
                   className="text-white text-xl hover:text-gray-600 no-underline hover:bg-gray-200 p-1 hover:rounded"
                   onClick={(e) => {
-                    e.preventDefault();
                     navigate('/about');
+                    window.location.reload();
                   }}
                 >
                   About Us
