@@ -55,20 +55,20 @@ function General() {
               className="text-xl border-b border-gray-300 focus:border-indigo-500 focus:outline-none"
             />
           ) : (
-            <span className="text-xl">{user.name}</span>
+            <span className="text-xl ml-4">{user.name}</span>
           )}
         </div>
         <div className="mb-4">
           <label htmlFor="email" className="text-stone-600 text-xl">
             Email:
           </label>
-          <span className="text-xl">{user.email}</span>
+          <span className="text-xl ml-4">{user.email}</span>
         </div>
         <div className="mb-4">
           <label htmlFor="createdAt" className="text-stone-600 text-xl">
             Created At:
           </label>
-          <span className="text-xl">
+          <span className="text-xl ml-4">
             {moment(user.createdAt).format('DD-MM-YYYY hh:mm A')}
           </span>
         </div>

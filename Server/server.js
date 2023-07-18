@@ -1,14 +1,15 @@
-const express = require('express');
+import express from 'express';
 const app = express();
 app.use(express.json());
 
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
-const dbConfig = require('./Config/dbConfig.js');
-const usersRoute = require('./Routes/usersRoute.js');
-const productsRoute = require('./Routes/productsRoute.js');
-const bidsRoute = require('./Routes/bidsRoute.js');
-const notificationsRoute = require('./Routes/notificationsRoute.js');
+import dbConfig from './Config/dbConfig.js';
+import usersRoute from './Routes/usersRoute.js';
+import productsRoute from './Routes/productsRoute.js';
+import bidsRoute from './Routes/bidsRoute.js';
+import notificationsRoute from './Routes/notificationsRoute.js';
 
 app.use('/api/users', usersRoute);
 app.use('/api/products', productsRoute);

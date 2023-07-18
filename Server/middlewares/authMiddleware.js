@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
   try {
     const token = req.header('authorization').split(' ')[1]; // splitting a string it becomes an array
     const decryptedToken = jwt.verify(token, process.env.JWT_SECRET); // to decrypt use jwt.verify..
@@ -13,6 +13,7 @@ module.exports = async (req, res, next) => {
     });
   }
 };
+
 
 // jwt.verify(token, process.env.JWT_SECRET);   the first parameter as the token and second parameter as the secret key and it must match with encrypted secret key
 // decryptedToken an objected with the property userID

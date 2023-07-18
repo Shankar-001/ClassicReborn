@@ -1,6 +1,6 @@
-const { Router } = require('express');
-const Bid = require('../Models/bidModel');
-const authMiddleware = require('../middlewares/authMiddleware');
+import { Router } from 'express';
+import Bid from '../Models/bidModel.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
@@ -52,4 +52,4 @@ router.post('/get-all-bids', authMiddleware, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

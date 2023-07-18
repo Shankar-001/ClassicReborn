@@ -1,6 +1,6 @@
-const { Router } = require('express');
-const authMiddleware = require('../middlewares/authMiddleware');
-const Notification = require('../Models/notificationModel');
+import { Router } from 'express';
+import authMiddleware from '../middlewares/authMiddleware.js';
+import Notification from '../Models/notificationModel.js';
 
 const router = Router();
 
@@ -74,4 +74,4 @@ router.put('/read-all-notifications', authMiddleware, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -1,11 +1,11 @@
-const { Router } = require('express');
-const Product = require('../Models/productModel.js');
-const authMiddleware = require('../middlewares/authMiddleware.js');
-const cloudinary = require('../Config/cloudinaryConfig.js');
-const multer = require('multer');
-const jwt = require("jsonwebtoken")
-const User = require('../Models/userModel.js');
-const Notification = require('../Models/notificationModel.js');
+import { Router } from 'express';
+import Product from '../Models/productModel.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
+import cloudinary from '../Config/cloudinaryConfig.js';
+import multer from 'multer';
+import jwt from "jsonwebtoken";
+import User from '../Models/userModel.js';
+import Notification from '../Models/notificationModel.js';
 
 const router = Router();
 
@@ -196,4 +196,4 @@ router.put('/update-product-status/:id', authMiddleware, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
