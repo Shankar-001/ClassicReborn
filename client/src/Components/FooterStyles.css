@@ -1,37 +1,7 @@
 .footer {
-  padding: 1rem 3rem;
+  padding: 4rem 3rem;
   background: rgb(47, 50, 59);
   color: #fff;
-}
-
-.footer a {
-  text-decoration: none;
-}
-
-.footer a i {
-  text-decoration: none;
-}
-
-.top {
-  display: flex;
-  align-items: center;
-  text-align: start;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin: 0 4rem;
-}
-
-.top i {
-  color: #fff;
-  font-size: 2.5rem;
-  margin-left: 1rem;
-}
-
-.top i:hover {
-  color: rgba(0, 29, 86, 0.934);
-}
-
-.bottom {
   padding-top: 2rem;
   text-align: start;
   display: flex;
@@ -39,23 +9,31 @@
   flex-wrap: wrap;
 }
 
-
-.bottom div {
+.footer div {
   display: flex;
   flex-direction: column;
 }
 
-.bottom h4 {
+.footer h4 {
   font-size: 1.3rem;
   padding: 1rem 0 0.8rem 0;
 }
 
-.bottom a,
-.bottom span {
+.footer a,
+.footer span {
   text-decoration: none;
   color: #fafafa;
   padding-bottom: 0.4rem;
   font-size: 1.1rem;
+}
+
+.footer a i {
+  text-decoration: none;
+}
+
+
+.footer a i:hover {
+  color: rgba(85, 116, 179, 0.934);
 }
 
 .footer .line {
@@ -77,18 +55,21 @@
 
 @media screen and (max-width: 850px) {
   .footer {
-    padding: 2rem 1rem;
+    padding: 1rem 2rem; /* Adjust the padding for smaller screens */
+    text-align: center; /* Center the content on smaller screens */
   }
 
-  .footer i {
-    margin: 1rem 1rem 0 0;
+  .footer div {
+    margin-bottom: 1rem; /* Add some space between the elements on smaller screens */
   }
-  
+
+  .top {
+    margin: 0 2rem; /* Adjust the margin for smaller screens */
+  }
+
   .top i {
-    margin: 1rem 0.5rem 0 0; /* Adjusted margin */
+    font-size: 2rem; /* Adjust the font size for smaller screens */
   }
 
-  .bottom div {
-    width: 50%;
-  }
+  /* Add any additional styles for smaller screens as needed */
 }
