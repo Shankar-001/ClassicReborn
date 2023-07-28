@@ -23,6 +23,7 @@ const userSchema = new Schema(
     },
     contact: {
       type: String,
+      required: true,
     },
     address: {
       type: String,
@@ -34,6 +35,13 @@ const userSchema = new Schema(
     status: {
       type: String,
       default: 'Active',
+    },
+    age: {
+      type: Number,
+    },
+    sex: {
+      type: String,
+      enum: ['Male', 'Female'],
     },
   },
   {
