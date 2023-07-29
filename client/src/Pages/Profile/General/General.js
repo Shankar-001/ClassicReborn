@@ -19,6 +19,7 @@ function General() {
 
   const handleEdit = () => {
     setIsEditing(true);
+
     form.setFieldsValue({
       name: user.name,
       email: user.email,
@@ -34,7 +35,6 @@ function General() {
       await form.validateFields(); // Validate the form fields
       const values = form.getFieldsValue();
 
-      // Custom validation for "contact" field to accept only 10-digit phone number
       if (values.contact && !/^\d{10}$/.test(values.contact)) {
         message.error('Contact number must be a 10-digit number.');
         return;
@@ -58,12 +58,8 @@ function General() {
 
   const handleCancel = () => {
     setIsEditing(false);
-    form.resetFields(['name', 'contact', 'address', 'age', 'sex']); // Reset only specific fields
-    setIsFormEdited(false); // Reset the form edited state
-  };
-
-  const handleFormChange = () => {
-    setIsFormEdited(true);
+    form.resetFields(['name', 'contact', 'address', 'age', 'sex']);
+    setIsFormEdited(false);
   };
 
   return (
@@ -75,7 +71,11 @@ function General() {
               <h1 className="text-4xl font-bold">Your Profile</h1>
               {isEditing ? (
                 <div>
-                  <Button type="primary" onClick={handleSave} disabled={!isFormEdited}>
+                  <Button
+                    type="primary"
+                    onClick={handleSave}
+                    disabled={!isFormEdited}
+                  >
                     Save
                   </Button>
                   <Button
@@ -87,9 +87,11 @@ function General() {
                   </Button>
                 </div>
               ) : (
-                <Button type="primary" onClick={handleEdit}>
-                  Edit
-                </Button>
+                <div>
+                  <Button type="primary" onClick={handleEdit}>
+                    Edit
+                  </Button>
+                </div>
               )}
             </div>
           </div>
@@ -102,7 +104,11 @@ function General() {
 
               <div className="mt-4 flex flex-col gap-5 font-medium">
                 {isEditing ? (
-                  <Form form={form} layout="vertical" onValuesChange={handleFormChange}>
+                  <Form
+                    form={form}
+                    layout="vertical"
+                    onValuesChange={() => setIsFormEdited(true)}
+                  >
                     <Form.Item
                       label="Your Name:"
                       name="name"
@@ -113,11 +119,12 @@ function General() {
                     <Form.Item label="Email:" name="email">
                       <Input placeholder="Email" disabled />
                     </Form.Item>
-                    <Form.Item
-                      label="Contact number:"
-                      name="contact"
-                    >
-                      <Input placeholder="Contact number" type="number" maxLength={10} />
+                    <Form.Item label="Contact number:" name="contact">
+                      <Input
+                        placeholder="Contact number"
+                        type="number"
+                        maxLength={10}
+                      />
                     </Form.Item>
                     <Form.Item label="Address:" name="address">
                       <Input placeholder="Address" />
@@ -137,7 +144,6 @@ function General() {
                   </Form>
                 ) : (
                   <>
-                  
                     <p className="text-gray-600">
                       <span className="font-semibold">Name:</span> {user.name}
                     </p>
@@ -166,7 +172,7 @@ function General() {
                         <span className="font-semibold">Sex:</span> {user.sex}
                       </p>
                     )}
-                    
+
                     <div className="flex gap-2 text-xs font-normal text-gray-500">
                       <p>Created {createdAtFromNow}</p>
                       <p>•</p>

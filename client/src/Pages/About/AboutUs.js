@@ -5,13 +5,13 @@ const AboutUs = () => {
     <div className="about-container">
       <h1 className='text-2xl'>Our Platform</h1>
       <p>
-        SellOrSwirl is a platform dedicated to helping individuals sell 
+        ClassicReborn is a platform dedicated to helping individuals sell 
         their used products or items that are no longer useful to them. 
         We have a passion for connecting buyers and sellers, making it 
         easy for people to find new homes for their pre-loved items. Our
         goal is to create a seamless and convenient selling experience 
         for our users, while also promoting sustainability and reducing
-        waste. Join SellOrSwirl today and discover a new way to sell 
+        waste. Join ClassicReborn today and discover a new way to sell 
         and find great deals on pre-owned items.
       </p>
 

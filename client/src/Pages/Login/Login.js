@@ -52,7 +52,7 @@ function Login() {
       <div className=" bg-white p-5 rounded w-[550px]">
         {/* border border-solid border-gray-800 */}
         <h1 className=" text-slate-800 text-xl">
-          SellOrSwirl - <span className=" text-gray-700 text-xl">Login</span>
+          ClassicRebornOrSwirl - <span className=" text-gray-700 text-xl">Login</span>
         </h1>
         <Divider />
         <Form layout="vertical" onFinish={handleFinish}>

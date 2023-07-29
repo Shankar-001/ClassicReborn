@@ -55,6 +55,7 @@ function ProductInfo() {
               {product.images.map((image, index) => {
                 return (
                   <img
+                    key={index}
                     className={
                       'w-20 h-20 object-cover rounded-md cursor-pointer ' +
                       (selectedImageIndex === index
@@ -160,7 +161,10 @@ function ProductInfo() {
               {product.showBidsOnProductPage &&
                 product?.bids?.map((bid) => {
                   return (
-                    <div key={bid._id} className="border border-gray-300 border-solid p-3 rounded mt-5">
+                    <div
+                      key={bid._id}
+                      className="border border-gray-300 border-solid p-3 rounded mt-5"
+                    >
                       <div className="flex justify-between text-gray-700">
                         <span>Name</span>
                         <span> {bid?.buyer?.name}</span>

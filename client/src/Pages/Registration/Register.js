@@ -86,7 +86,7 @@ function Register() {
     <div className="h-screen bg-primary flex justify-center items-center">
       <div className="bg-white p-5 rounded w-[550px]">
         <h1 className="text-slate-700 text-xl">
-          SellOrSwirl - <span className="text-gray-700 text-xl">SignUp</span>
+          ClassicRebornOrSwirl - <span className="text-gray-700 text-xl">SignUp</span>
         </h1>
         <Divider />
         <Form layout="vertical" form={form} onFinish={handleSubmit}>

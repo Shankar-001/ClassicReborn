@@ -12,7 +12,7 @@ import {
 } from '../apicalls/notifications';
 import ConfirmationModal from './ConfirmationPage';
 import Footer from './Footer';
-import img  from './logo.png';
+import img  from './logo.svg';
 
 function ProtectedPage({ children }) {
   const [notifications = [], setNotifications] = useState([]);
@@ -117,11 +117,11 @@ function ProtectedPage({ children }) {
     user && (
       <div>
         {/* Header part start here */}
-        <div className="flex justify-between items-center bg-slate-700 p-5 max-h-20">
+        <div className="flex justify-between items-center bg-slate-600 p-5 max-h-20">
           <h1
             className="text-2xl text-white"
           >
-            <img src={img} alt="Sell Or Swirl" style={{ maxWidth: '40%', height: '30%' }} />
+            <img src={img} alt="ClassicReborn" style={{ width: '175px' }} />
 
           </h1>
           <div className="flex items-center justify-end ">
