@@ -23,7 +23,6 @@ const userSchema = new Schema(
     },
     contact: {
       type: String,
-      required: true,
     },
     address: {
       type: String,
