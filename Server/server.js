@@ -19,8 +19,8 @@ app.use('/api/notifications', notificationsRoute);
 const port = process.env.PORT || 5000;
 
 // deployment config
-const path = require("path");
-__dirname = path.resolve();
+import path from "path"
+let __dirname = path.resolve();
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));
