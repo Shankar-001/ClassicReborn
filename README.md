@@ -751,3 +751,17 @@ router.put('/edit-product/:id', authMiddleware, async (req, res) => {
 Id i am getting in query string which is params and data i am upadating in req.body
 
 req.params is an object that contains the route parameters extracted from the URL. In this case, req.params.id is used to access the value of the id parameter in the URL
+
+```bash
+"build": "cd Server && npm install  && cd ../client && npm install && npm run build",
+    "start": "nodemon Server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+```
+
+```bash
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  });
+}```
